@@ -1,26 +1,37 @@
 {
-  "schemaVersion": 1,
-  "id": "renderdistancecycler",
-  "version": "1.0.0-1.19",
-  "name": "Render Distance Cycler",
-  "description": "F3 + F to cycle Render Distance",
-  "authors": [
-    "kyrptonaught"
-  ],
-  "contact": {
-    "homepage": "https://github.com/kyrptonaught/renderdistancecycler",
-    "sources": "https://github.com/kyrptonaught/renderdistancecycler"
-  },
-  "license": "MIT",
-  "icon": "assets/renderdistancecycler/icon.png",
-  "environment": "client",
-  "mixins": [
-    {
-      "config": "renderdistancecycler.mixins.json",
-      "environment": "client"
-    }
-  ],
-  "depends": {
-    "fabric": "*"
-  }
+	"schemaVersion": 1,
+	"id": "render-distance-cycler",
+	"version": "1.0.0",
+	"name": "Render Distance Cycler",
+	"description": "F3 + F to cycle Render Distance (1.21.6<)",
+	"authors": [
+		"Mark Snicket"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/render-distance-cycler",
+		"sources": "https://github.com/Mark-Snicket/renderdistancecycler/"
+	},
+	"license": "MIT",
+	"environment": "client",
+	"mixins": [
+		"render-distance-cycler.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.17.2",
+		"minecraft": [
+			"1.21.6",
+			"1.21.7",
+			"1.21.8"
+		],
+		"java": ">=21"
+	},
+	"custom": {
+		"modmenu": {
+			"update_checker": true,
+			"links": {
+				"modmenu.modrinth": "https://modrinth.com/mod/render-distance-cycler",
+				"modmenu.discord": "https://discord.gg/c9zJ6TkWbw"
+			}
+		}
+	}
 }
