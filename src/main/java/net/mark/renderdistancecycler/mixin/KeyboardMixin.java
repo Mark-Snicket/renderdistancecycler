@@ -29,9 +29,6 @@ public abstract class KeyboardMixin {
         this.debugLog(MutableText.of(new TranslatableTextContent(key, (String)null, value)));
     }
 
-
-    private void sendMessage(MutableText translatable) {}
-
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
     public void tryCycleRenderDistance(int key, CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue() && key == 70) {
@@ -48,5 +45,7 @@ public abstract class KeyboardMixin {
     public void addCycleRenderHelpMessage(int key, CallbackInfoReturnable<Boolean> cir) {
         this.sendMessage(Text.translatable("debug.cycle_renderdistance.help"));
     }
+
+    private void sendMessage(MutableText translatable) {}
 
 }

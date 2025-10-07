@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "render-distance-cycler",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"name": "Render Distance Cycler",
 	"description": "F3 + F to cycle Render Distance (1.21.6<)",
 	"authors": [
