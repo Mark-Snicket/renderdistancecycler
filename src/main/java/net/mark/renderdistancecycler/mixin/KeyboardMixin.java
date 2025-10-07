@@ -6,6 +6,7 @@ import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,10 +23,14 @@ public abstract class KeyboardMixin {
     private MinecraftClient client;
 
     @Shadow
-    protected abstract void debugLog(String key);
+    protected abstract void debugLog(Text text);
+
+    private void debugLog(String key, Object[] value) {
+        this.debugLog(MutableText.of(new TranslatableTextContent(key, (String)null, value)));
+    }
 
 
-    private void sendMessage(MutableText translatable) {}
+
 
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
     public void tryCycleRenderDistance(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
@@ -34,7 +39,7 @@ public abstract class KeyboardMixin {
             SimpleOption.ValidatingIntSliderCallbacks callbacks = (SimpleOption.ValidatingIntSliderCallbacks) renderDistance.getCallbacks();
 
             renderDistance.setValue(MathHelper.clamp(renderDistance.getValue() + (input.hasShift() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
-            this.debugLog("debug.cycle_renderdistance.message." + renderDistance.getValue());
+            this.debugLog("debug.cycle_renderdistance.message", new Integer[]{renderDistance.getValue()});
             cir.setReturnValue(true);
         }
     }
@@ -43,5 +48,7 @@ public abstract class KeyboardMixin {
     public void addCycleRenderHelpMessage(int key, CallbackInfoReturnable<Boolean> cir) {
         this.sendMessage(Text.translatable("debug.cycle_renderdistance.help"));
     }
+
+    private void sendMessage(MutableText translatable) {}
 
 }
