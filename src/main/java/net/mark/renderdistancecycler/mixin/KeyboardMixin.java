@@ -29,9 +29,6 @@ public abstract class KeyboardMixin {
         this.debugLog(MutableText.of(new TranslatableTextContent(key, (String)null, value)));
     }
 
-
-
-
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
     public void tryCycleRenderDistance(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue() && input.key() == 70) {
