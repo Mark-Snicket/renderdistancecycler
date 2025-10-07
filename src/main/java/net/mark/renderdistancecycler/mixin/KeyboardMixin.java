@@ -6,6 +6,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +23,11 @@ public abstract class KeyboardMixin {
     private MinecraftClient client;
 
     @Shadow
-    protected abstract void debugLog(String key);
+    protected abstract void debugLog(Text text);
+
+    private void debugLog(String key, Object[] value) {
+        this.debugLog(MutableText.of(new TranslatableTextContent(key, (String)null, value)));
+    }
 
 
     private void sendMessage(MutableText translatable) {}
@@ -34,7 +39,7 @@ public abstract class KeyboardMixin {
             SimpleOption.ValidatingIntSliderCallbacks callbacks = (SimpleOption.ValidatingIntSliderCallbacks) renderDistance.getCallbacks();
 
             renderDistance.setValue(MathHelper.clamp(renderDistance.getValue() + (Screen.hasShiftDown() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
-            this.debugLog("debug.cycle_renderdistance.message." + renderDistance.getValue());
+            this.debugLog("debug.cycle_renderdistance.message",new Integer[]{renderDistance.getValue()});
             cir.setReturnValue(true);
         }
     }
@@ -45,4 +50,3 @@ public abstract class KeyboardMixin {
     }
 
 }
-
