@@ -1,51 +1,47 @@
 package net.mark.renderdistancecycler.mixin;
 
-import net.minecraft.client.Keyboard;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.option.SimpleOption;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.KeyboardHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Keyboard.class)
+@Mixin(KeyboardHandler.class)
 public abstract class KeyboardMixin {
 
-    @Shadow
     @Final
-    private MinecraftClient client;
+    private Minecraft client;
 
-    @Shadow
-    protected abstract void debugLog(Text text);
+    protected abstract void debugLog(Component text);
 
     private void debugLog(String key, Object[] value) {
-        this.debugLog(MutableText.of(new TranslatableTextContent(key, (String)null, value)));
+        this.debugLog(MutableComponent.create(new TranslatableContents(key, (String)null, value)));
     }
 
-    @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
-    public void tryCycleRenderDistance(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "handleDebugKeys", at = @At("RETURN"), cancellable = true)
+    public void tryCycleRenderDistance(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue() && input.key() == 70) {
-            SimpleOption<Integer> renderDistance = client.options.getViewDistance();
-            SimpleOption.ValidatingIntSliderCallbacks callbacks = (SimpleOption.ValidatingIntSliderCallbacks) renderDistance.getCallbacks();
+            OptionInstance<Integer> renderDistance = client.options.renderDistance();
+            OptionInstance.IntRange callbacks = (OptionInstance.IntRange) renderDistance.values();
 
-            renderDistance.setValue(MathHelper.clamp(renderDistance.getValue() + (input.hasShift() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
-            this.debugLog("debug.cycle_renderdistance.message", new Integer[]{renderDistance.getValue()});
+            renderDistance.set(Mth.clamp(renderDistance.get() + (input.hasShiftDown() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
+            this.debugLog("debug.cycle_renderdistance.message", new Integer[]{renderDistance.get()});
             cir.setReturnValue(true);
         }
     }
-    /* not required, so comment out for now */
-    //@Inject(method = "processF3", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V", ordinal = 4))
-    public void addCycleRenderHelpMessage(int key, CallbackInfoReturnable<Boolean> cir) {
-        this.sendMessage(Text.translatable("debug.cycle_renderdistance.help"));
+    /* not required, so comment out for now *//*
+    //@Inject(method = "handleDebugKeys", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V", ordinal = 4))
+    public void addCycleRenderHelpMessage(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
+        this.sendMessage(Component.translatable("debug.cycle_renderdistance.help"));
     }
 
-    private void sendMessage(MutableText translatable) {}
+    private void sendMessage(MutableComponent translatable) {}*/
 }
