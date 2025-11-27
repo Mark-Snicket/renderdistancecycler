@@ -10,6 +10,7 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -17,19 +18,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(KeyboardHandler.class)
 public abstract class KeyboardMixin {
 
+    @Shadow
     @Final
-    private Minecraft client;
+    private Minecraft minecraft;
 
-    protected abstract void debugLog(Component text);
+    @Shadow
+    protected abstract void debugFeedbackComponent(Component component);
+
 
     private void debugLog(String key, Object[] value) {
-        this.debugLog(MutableComponent.create(new TranslatableContents(key, (String)null, value)));
+        this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents(key, (String)null, value)));
     }
 
     @Inject(method = "handleDebugKeys", at = @At("RETURN"), cancellable = true)
     public void tryCycleRenderDistance(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!cir.getReturnValue() && input.key() == 70) {
-            OptionInstance<Integer> renderDistance = client.options.renderDistance();
+            OptionInstance<Integer> renderDistance = minecraft.options.renderDistance();
             OptionInstance.IntRange callbacks = (OptionInstance.IntRange) renderDistance.values();
 
             renderDistance.set(Mth.clamp(renderDistance.get() + (input.hasShiftDown() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
