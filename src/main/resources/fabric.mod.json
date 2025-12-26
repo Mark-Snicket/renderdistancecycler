@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "render-distance-cycler",
-	"version": "1.0.1",
+	"version": "${version}",
 	"name": "Render Distance Cycler",
 	"description": "F3 + F to cycle Render Distance (1.21.6<)",
 	"authors": [
@@ -20,8 +20,6 @@
 	"depends": {
 		"fabricloader": ">=0.17.2",
 		"minecraft": [
-			"1.21.9",
-            "1.21.10",
             "1.21.11"
 		],
 		"java": ">=21"
