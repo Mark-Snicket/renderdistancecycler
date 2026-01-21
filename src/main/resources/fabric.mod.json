@@ -10,7 +10,7 @@
 	"contact": {
 		"homepage": "https://modrinth.com/mod/render-distance-cycler",
 		"sources": "https://github.com/Mark-Snicket/renderdistancecycler/",
-		"issues": "https://github.com/Mark-Snicket/helg/issues/"
+		"issues": "https://github.com/Mark-Snicket/renderdistancecycler/issues/"
 	},
 	"license": "MIT",
 	"environment": "client",
