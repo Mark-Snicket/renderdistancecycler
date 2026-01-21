@@ -23,29 +23,23 @@ public abstract class KeyboardMixin {
     private MinecraftClient client;
 
     @Shadow
+    protected abstract void sendMessage(Text translatable);
+
+    @Shadow
     protected abstract void debugLog(Text text);
 
-    private void debugLog(String key, Object[] value) {
-        this.debugLog(MutableText.of(new TranslatableTextContent(key, (String)null, value)));
-    }
-
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
-    public void tryCycleRenderDistance(int key, CallbackInfoReturnable<Boolean> cir) {
-        if (!cir.getReturnValue() && key == 70) {
+    public void sendHelpMessageOrCycleRenderDistance(int key, CallbackInfoReturnable<Boolean> cir) {
+        if (key == 81) {
+            this.sendMessage(Text.translatable("debug.cycle_renderdistance.help"));
+        }
+        else if (!cir.getReturnValue() && key == 70) {
             SimpleOption<Integer> renderDistance = client.options.getViewDistance();
             SimpleOption.ValidatingIntSliderCallbacks callbacks = (SimpleOption.ValidatingIntSliderCallbacks) renderDistance.getCallbacks();
 
             renderDistance.setValue(MathHelper.clamp(renderDistance.getValue() + (Screen.hasShiftDown() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
-            this.debugLog("debug.cycle_renderdistance.message",new Integer[]{renderDistance.getValue()});
+            this.debugLog(MutableText.of(new TranslatableTextContent("debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.getValue()})));
             cir.setReturnValue(true);
         }
     }
-                /* not required, so comment out for now */
-    //@Inject(method = "processF3", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V", ordinal = 4))
-    public void addCycleRenderHelpMessage(int key, CallbackInfoReturnable<Boolean> cir) {
-        this.sendMessage(Text.translatable("debug.cycle_renderdistance.help"));
-    }
-
-    private void sendMessage(MutableText translatable) {}
-
 }

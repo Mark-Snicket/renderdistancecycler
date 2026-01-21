@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "render-distance-cycler",
-	"version": "1.0.1",
+	"version": "${version}",
 	"name": "Render Distance Cycler",
 	"description": "F3 + F to cycle Render Distance (1.21.6<)",
 	"authors": [
@@ -9,7 +9,8 @@
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/mod/render-distance-cycler",
-		"sources": "https://github.com/Mark-Snicket/renderdistancecycler/"
+		"sources": "https://github.com/Mark-Snicket/renderdistancecycler/",
+		"issues": "https://github.com/Mark-Snicket/helg/issues/"
 	},
 	"license": "MIT",
 	"environment": "client",
