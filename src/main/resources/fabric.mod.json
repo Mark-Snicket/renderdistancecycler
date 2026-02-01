@@ -14,7 +14,11 @@
 	},
 	"license": "MIT",
 	"environment": "client",
-
+	"entrypoints": {
+		"client": [
+			"net.mark.renderdistancecycler.RenderDistanceCyclerClient"
+		]
+	},
 	"mixins": [
 		"render-distance-cycler.mixins.json"
 	],
