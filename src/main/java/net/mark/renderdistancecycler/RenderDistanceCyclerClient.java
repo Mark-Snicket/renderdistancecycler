@@ -41,14 +41,14 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
 
         renderDistance.set(Mth.clamp(IntegerArgumentType.getInteger(context, "target_render_distance"), callbacks.minInclusive(), callbacks.maxInclusive()));
 
-        context.getSource().getPlayer().displayClientMessage(
+        context.getSource().getPlayer().sendSystemMessage(
                 getDebugMessage(MutableComponent.create(new TranslatableContents(
                         "debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()}))), false);
         return 0;
     }
 
     private static int getRenderDistance(CommandContext<CommandSourceStack> context) {
-        context.getSource().getPlayer().displayClientMessage(
+        context.getSource().getPlayer().sendSystemMessage(
                 getDebugMessage(MutableComponent.create(new TranslatableContents(
                         "debug.cycle_renderdistance.message", null, new Integer[]{
                         Minecraft.getInstance().options.renderDistance().get()
