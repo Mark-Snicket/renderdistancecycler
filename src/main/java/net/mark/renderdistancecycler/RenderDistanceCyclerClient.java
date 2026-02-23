@@ -15,6 +15,8 @@ import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 
+import java.util.Objects;
+
 public class RenderDistanceCyclerClient implements ClientModInitializer {
 
     @Override
@@ -41,14 +43,17 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
 
         renderDistance.setValue(MathHelper.clamp(IntegerArgumentType.getInteger(context, "target_render_distance"), callbacks.minInclusive(), callbacks.maxInclusive()));
 
-        context.getSource().getPlayer().sendMessage(
+        Objects.requireNonNull(
+            context.getSource().getPlayer()).sendMessage(
                 getDebugMessage(MutableText.of(new TranslatableTextContent(
                         "debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.getValue()}))));
+        MinecraftClient.getInstance().options.write();
         return 0;
     }
 
     private static int getRenderDistance(CommandContext<ServerCommandSource> context) {
-        context.getSource().getPlayer().sendMessage(
+        Objects.requireNonNull(
+            context.getSource().getPlayer()).sendMessage(
                 getDebugMessage(MutableText.of(new TranslatableTextContent(
                         "debug.cycle_renderdistance.message", null, new Integer[]{
                         MinecraftClient.getInstance().options.getViewDistance().getValue()
