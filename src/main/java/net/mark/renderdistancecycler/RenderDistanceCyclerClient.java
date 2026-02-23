@@ -47,6 +47,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
             context.getSource().getPlayer()).sendMessage(
                 getDebugMessage(MutableText.of(new TranslatableTextContent(
                         "debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.getValue()}))));
+
         MinecraftClient.getInstance().options.write();
         return 0;
     }
