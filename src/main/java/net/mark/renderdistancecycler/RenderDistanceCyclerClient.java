@@ -15,20 +15,22 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.util.Mth;
 
+import java.util.Objects;
+
 public class RenderDistanceCyclerClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
         // renderDistance command
         CommandRegistrationCallback.EVENT.register(
-                ((dispatcher, registry, environment) -> dispatcher.register(
+                ((dispatcher, _, _) -> dispatcher.register(
                         Commands.literal("renderDistance")
                                 .executes(RenderDistanceCyclerClient::getRenderDistance)
                                 .then(Commands.argument("target_render_distance", IntegerArgumentType.integer( 2))
                                         .executes(RenderDistanceCyclerClient::setRenderDistance)))));
         // rd command
         CommandRegistrationCallback.EVENT.register(
-                ((dispatcher, registry, environment) -> dispatcher.register(// renderDistance command alias: "rd"
+                ((dispatcher, _, _) -> dispatcher.register(
                         Commands.literal("rd")
                                 .executes(RenderDistanceCyclerClient::getRenderDistance)
                                 .then(Commands.argument("target_render_distance", IntegerArgumentType.integer(2))
@@ -41,14 +43,17 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
 
         renderDistance.set(Mth.clamp(IntegerArgumentType.getInteger(context, "target_render_distance"), callbacks.minInclusive(), callbacks.maxInclusive()));
 
-        context.getSource().getPlayer().sendSystemMessage(
+        Objects.requireNonNull(
+            context.getSource().getPlayer()).sendSystemMessage(
                 getDebugMessage(MutableComponent.create(new TranslatableContents(
                         "debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()}))), false);
+        Minecraft.getInstance().options.save();
         return 0;
     }
 
     private static int getRenderDistance(CommandContext<CommandSourceStack> context) {
-        context.getSource().getPlayer().sendSystemMessage(
+        Objects.requireNonNull(
+            context.getSource().getPlayer()).sendSystemMessage(
                 getDebugMessage(MutableComponent.create(new TranslatableContents(
                         "debug.cycle_renderdistance.message", null, new Integer[]{
                         Minecraft.getInstance().options.renderDistance().get()

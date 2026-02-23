@@ -37,6 +37,8 @@ public abstract class KeyboardMixin {
             renderDistance.set(Mth.clamp(renderDistance.get() + (keyEvent.hasShiftDown() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
             this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()})));
 
+            Minecraft.getInstance().options.save();
+
             cir.setReturnValue(true);
         }
     }
