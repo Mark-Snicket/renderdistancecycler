@@ -18,7 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class KeyboardMixin {
 
     @Shadow
-    protected abstract void showDebugChat(Component translatable);
+    protected abstract void showDebugChat(Component component);
 
     @Shadow
     protected abstract void debugFeedbackComponent(Component component);
@@ -29,9 +29,9 @@ public abstract class KeyboardMixin {
             this.showDebugChat(Component.translatable("debug.cycle_renderdistance.help"));
         } else if (!cir.getReturnValue() && input.key() == 70) {
             OptionInstance<Integer> renderDistance = Minecraft.getInstance().options.renderDistance();
-            OptionInstance.IntRange callbacks = (OptionInstance.IntRange) renderDistance.values();
+            OptionInstance.IntRange range = (OptionInstance.IntRange) renderDistance.values();
 
-            renderDistance.set(Mth.clamp(renderDistance.get() + (input.hasShiftDown() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
+            renderDistance.set(Mth.clamp(renderDistance.get() + (input.hasShiftDown() ? -1 : 1), range.minInclusive(), range.maxInclusive()));
             this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()})));
 
             Minecraft.getInstance().options.save();
