@@ -1,41 +1,41 @@
 package net.mark.renderdistancecycler.mixin;
 
-import net.minecraft.client.Keyboard;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.option.SimpleOption;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.client.KeyboardHandler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.OptionInstance;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Keyboard.class)
+@Mixin(KeyboardHandler.class)
 public abstract class KeyboardMixin {
 
     @Shadow
-    protected abstract void sendMessage(Text translatable);
+    protected abstract void showDebugChat(Component component);
 
     @Shadow
-    protected abstract void debugLog(Text text);
+    protected abstract void debugFeedbackComponent(Component component);
 
-    @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "handleChunkDebugKeys", at = @At("RETURN"), cancellable = true)
     public void sendHelpMessageOrCycleRenderDistance(int key, CallbackInfoReturnable<Boolean> cir) {
         if (key == 81) {
-            this.sendMessage(Text.translatable("debug.cycle_renderdistance.help"));
+            this.showDebugChat(Component.translatable("debug.cycle_renderdistance.help"));
         }
         else if (!cir.getReturnValue() && key == 70) {
-            SimpleOption<Integer> renderDistance = MinecraftClient.getInstance().options.getViewDistance();
-            SimpleOption.ValidatingIntSliderCallbacks callbacks = (SimpleOption.ValidatingIntSliderCallbacks) renderDistance.getCallbacks();
+            OptionInstance<Integer> renderDistance = Minecraft.getInstance().options.renderDistance();
+            OptionInstance.IntRange range = (OptionInstance.IntRange) renderDistance.values();
 
-            renderDistance.setValue(MathHelper.clamp(renderDistance.getValue() + (Screen.hasShiftDown() ? -1 : 1), callbacks.minInclusive(), callbacks.maxInclusive()));
-            this.debugLog(MutableText.of(new TranslatableTextContent("debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.getValue()})));
+            renderDistance.set(Mth.clamp(renderDistance.get() + (Screen.hasShiftDown() ? -1 : 1), range.minInclusive(), range.maxInclusive()));
+            this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()})));
 
-            MinecraftClient.getInstance().options.write();
+            Minecraft.getInstance().options.save();
             cir.setReturnValue(true);
         }
     }
