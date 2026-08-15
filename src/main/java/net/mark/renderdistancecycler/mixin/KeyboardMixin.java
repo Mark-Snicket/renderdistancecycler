@@ -26,14 +26,14 @@ public abstract class KeyboardMixin {
     protected abstract void debugFeedbackComponent(Component component);
 
     @Inject(method = "handleDebugKeys", at = @At("RETURN"), cancellable = true)
-    public void cycleRenderDistance(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
+    public void cycleRenderDistance(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
 
-        if (!cir.getReturnValue() && keyEvent.key() == 70) {
+        if (!cir.getReturnValue() && event.key() == 70) {
 
             OptionInstance<Integer> renderDistance = minecraft.options.renderDistance();
             OptionInstance.IntRange range = (OptionInstance.IntRange) renderDistance.values();
 
-            renderDistance.set(Mth.clamp(renderDistance.get() + (keyEvent.hasShiftDown() ? -1 : 1), range.minInclusive(), range.maxInclusive()));
+            renderDistance.set(Mth.clamp(renderDistance.get() + (event.hasShiftDown() ? -1 : 1), range.minInclusive(), range.maxInclusive()));
             this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()})));
 
             Minecraft.getInstance().options.save();
