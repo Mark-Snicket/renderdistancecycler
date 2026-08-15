@@ -30,7 +30,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
                                         .executes(RenderDistanceCyclerClient::setRenderDistance)))));
         // rd command
         CommandRegistrationCallback.EVENT.register(
-                ((dispatcher, registry, environment) -> dispatcher.register(// renderDistance command alias: "rd"
+                ((dispatcher, registry, environment) -> dispatcher.register(
                         Commands.literal("rd")
                                 .executes(RenderDistanceCyclerClient::getRenderDistance)
                                 .then(Commands.argument("target_render_distance", IntegerArgumentType.integer(2))

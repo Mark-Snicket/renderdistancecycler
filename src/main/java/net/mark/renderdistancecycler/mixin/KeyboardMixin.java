@@ -23,7 +23,7 @@ public abstract class KeyboardMixin {
     @Shadow
     protected abstract void debugFeedbackComponent(Component component);
 
-    @Inject(method = "handleChunkDebugKeys", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "handleDebugKeys", at = @At("RETURN"), cancellable = true)
     public void sendHelpMessageOrCycleRenderDistance(int key, CallbackInfoReturnable<Boolean> cir) {
         if (key == 81) {
             this.showDebugChat(Component.translatable("debug.cycle_renderdistance.help"));
