@@ -46,7 +46,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
         Objects.requireNonNull(
                 context.getSource().getPlayer()).sendSystemMessage(
                 getDebugMessage(MutableComponent.create(new TranslatableContents(
-                        "debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()}))));
+                        "debug.render-distance-cycler.message", null, new Integer[]{renderDistance.get()}))));
         Minecraft.getInstance().options.save();
         return 0;
     }
@@ -55,7 +55,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
         Objects.requireNonNull(
                 context.getSource().getPlayer()).sendSystemMessage(
                 getDebugMessage(MutableComponent.create(new TranslatableContents(
-                        "debug.cycle_renderdistance.message", null, new Integer[]{
+                        "debug.render-distance-cycler.message", null, new Integer[]{
                         Minecraft.getInstance().options.renderDistance().get()
                 }))));
         return 0;

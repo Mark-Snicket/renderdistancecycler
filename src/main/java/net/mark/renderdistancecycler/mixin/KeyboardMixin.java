@@ -34,10 +34,9 @@ public abstract class KeyboardMixin {
             OptionInstance.IntRange range = (OptionInstance.IntRange) renderDistance.values();
 
             renderDistance.set(Mth.clamp(renderDistance.get() + (event.hasShiftDown() ? -1 : 1), range.minInclusive(), range.maxInclusive()));
-            this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()})));
+            this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.render-distance-cycler.message", null, new Integer[]{renderDistance.get()})));
 
             Minecraft.getInstance().options.save();
-
             cir.setReturnValue(true);
         }
     }
