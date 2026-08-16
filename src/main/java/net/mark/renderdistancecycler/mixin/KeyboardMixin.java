@@ -1,5 +1,6 @@
 package net.mark.renderdistancecycler.mixin;
 
+import net.mark.renderdistancecycler.RenderDistanceCyclerClient;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
@@ -28,7 +29,7 @@ public abstract class KeyboardMixin {
     @Inject(method = "handleDebugKeys", at = @At("RETURN"), cancellable = true)
     public void cycleRenderDistance(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
 
-        if (!cir.getReturnValue() && event.key() == 70) {
+        if (!cir.getReturnValue() && RenderDistanceCyclerClient.CYCLER_KEY.matches(event)) {
 
             OptionInstance<Integer> renderDistance = minecraft.options.renderDistance();
             OptionInstance.IntRange range = (OptionInstance.IntRange) renderDistance.values();
