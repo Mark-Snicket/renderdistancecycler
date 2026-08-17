@@ -1,12 +1,15 @@
 package net.mark.renderdistancecycler;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
 import net.minecraft.network.chat.CommonComponents;
@@ -14,10 +17,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.util.Mth;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 
 public class RenderDistanceCyclerClient implements ClientModInitializer {
+
+    public static final KeyMapping CYCLER_KEY = KeyBindingHelper.registerKeyBinding(
+            new KeyMapping("key.debug.render-distance-cycler",
+                    InputConstants.Type.KEYSYM,
+                    GLFW.GLFW_KEY_F, KeyMapping.Category.DEBUG)
+    );
 
     @Override
     public void onInitializeClient() {
@@ -46,7 +56,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
         Objects.requireNonNull(
                 context.getSource().getPlayer()).displayClientMessage(
                 getDebugMessage(MutableComponent.create(new TranslatableContents(
-                        "debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()}))), false);
+                        "debug.render-distance-cycler.message", null, new Integer[]{renderDistance.get()}))), false);
 
         Minecraft.getInstance().options.save();
         return 0;
@@ -56,7 +66,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
         Objects.requireNonNull(
                 context.getSource().getPlayer()).displayClientMessage(
                 getDebugMessage(MutableComponent.create(new TranslatableContents(
-                        "debug.cycle_renderdistance.message", null, new Integer[]{
+                        "debug.render-distance-cycler.message", null, new Integer[]{
                         Minecraft.getInstance().options.renderDistance().get()
                 }))), false);
         return 0;
