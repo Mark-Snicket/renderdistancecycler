@@ -1,3 +1,4 @@
 {
-  "debug.cycle_renderdistance.message": "Render Distance: %s"
+    "debug.render-distance-cycler.message": "Render Distance: %s",
+    "key.debug.render-distance-cycler": "Cycle Render Distance"
 }
