@@ -1,5 +1,6 @@
 package net.mark.renderdistancecycler.mixin;
 
+import net.mark.renderdistancecycler.RenderDistanceCyclerClient;
 import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.OptionInstance;
@@ -24,16 +25,15 @@ public abstract class KeyboardMixin {
     @Inject(method = "handleDebugKeys", at = @At("RETURN"), cancellable = true)
     public void cycleRenderDistance(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
 
-        if (!cir.getReturnValue() && event.key() == 70) {
+        if (!cir.getReturnValue() && RenderDistanceCyclerClient.CYCLER_KEY.matches(event)) {
 
             OptionInstance<Integer> renderDistance = Minecraft.getInstance().options.renderDistance();
             OptionInstance.IntRange range = (OptionInstance.IntRange) renderDistance.values();
 
             renderDistance.set(Mth.clamp(renderDistance.get() + (event.hasShiftDown() ? -1 : 1), range.minInclusive(), range.maxInclusive()));
-            this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.cycle_renderdistance.message", null, new Integer[]{renderDistance.get()})));
+            this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.render-distance-cycler.message", null, new Integer[]{renderDistance.get()})));
 
             Minecraft.getInstance().options.save();
-
             cir.setReturnValue(true);
         }
     }
