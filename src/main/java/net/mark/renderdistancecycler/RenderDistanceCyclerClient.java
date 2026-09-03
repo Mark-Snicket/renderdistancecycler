@@ -17,7 +17,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.util.Mth;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 
@@ -26,7 +25,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
     public static final KeyMapping CYCLER_KEY = KeyBindingHelper.registerKeyBinding(
             new KeyMapping("key.debug.render-distance-cycler",
                     InputConstants.Type.KEYSYM,
-                    GLFW.GLFW_KEY_F, KeyMapping.Category.DEBUG)
+                    InputConstants.KEY_F, KeyMapping.Category.DEBUG)
     );
 
     @Override
