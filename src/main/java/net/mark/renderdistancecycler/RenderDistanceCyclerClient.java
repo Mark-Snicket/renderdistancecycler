@@ -25,7 +25,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
     public static final KeyMapping CYCLER_KEY = KeyMappingHelper.registerKeyMapping(
             new KeyMapping("key.debug.render-distance-cycler",
                     InputConstants.Type.KEYBOARD,
-                    9, KeyMapping.Category.DEBUG) // 9 is F, still need to find out how to make it non-hardcoded
+                    InputConstants.KEY_F, KeyMapping.Category.DEBUG)
     );
 
     @Override
