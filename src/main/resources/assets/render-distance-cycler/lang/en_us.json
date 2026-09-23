@@ -1,4 +1,6 @@
 {
     "debug.render-distance-cycler.message": "Render Distance: %s",
-    "key.debug.render-distance-cycler": "Cycle Render Distance"
+    "key.debug.render-distance-cycler.normal": "Cycle Render Distance",
+    "key.debug.render-distance-cycler.up": "Cycle Render Distance Up",
+    "key.debug.render-distance-cycler.down": "Cycle Render Distance Down"
 }
