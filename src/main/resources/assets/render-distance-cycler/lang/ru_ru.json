@@ -1,0 +1,7 @@
+
+{
+    "debug.render-distance-cycler.message": "Дальность прорисовки: %s",
+    "key.debug.render-distance-cycler.normal": "Изменить дальность прорисовки",
+    "key.debug.render-distance-cycler.up": "Увеличить дальность прорисовки",
+    "key.debug.render-distance-cycler.down": "Уменьшить дальность прорисовки"
+}
