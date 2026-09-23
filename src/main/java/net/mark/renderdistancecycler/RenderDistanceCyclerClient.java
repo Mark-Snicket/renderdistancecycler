@@ -23,9 +23,21 @@ import java.util.Objects;
 public class RenderDistanceCyclerClient implements ClientModInitializer {
 
     public static final KeyMapping CYCLER_KEY = KeyMappingHelper.registerKeyMapping(
-            new KeyMapping("key.debug.render-distance-cycler",
+            new KeyMapping("key.debug.render-distance-cycler.normal",
                     InputConstants.Type.KEYBOARD,
                     InputConstants.KEY_F, KeyMapping.Category.DEBUG)
+    );
+
+    public static final KeyMapping CYCLER_KEY_UP = KeyMappingHelper.registerKeyMapping(
+            new KeyMapping("key.debug.render-distance-cycler.up",
+                    InputConstants.Type.KEYBOARD,
+                    0, KeyMapping.Category.DEBUG)
+    );
+
+    public static final KeyMapping CYCLER_KEY_DOWN = KeyMappingHelper.registerKeyMapping(
+            new KeyMapping("key.debug.render-distance-cycler.down",
+                    InputConstants.Type.KEYBOARD,
+                    0, KeyMapping.Category.DEBUG)
     );
 
     @Override
