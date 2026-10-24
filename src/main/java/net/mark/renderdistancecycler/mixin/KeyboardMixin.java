@@ -30,19 +30,21 @@ public abstract class KeyboardMixin {
     @Inject(method = "handleDebugKeys", at = @At("RETURN"), cancellable = true)
     public void cycleRenderDistance(KeyEvent event, CallbackInfoReturnable<Boolean> cir) {
 
-        if (!cir.getReturnValue()) {
-            // select case to use based on key used
-            if (RenderDistanceCyclerClient.CYCLER_KEY.matches(event)) {
-                cycleDynamic(event.hasShiftDown());
-            } else if (RenderDistanceCyclerClient.CYCLER_KEY_UP.matches(event)) {
-                cycleUp();
-            } else if (RenderDistanceCyclerClient.CYCLER_KEY_DOWN.matches(event)) {
-                cycleDown();
-            }
+        if (RenderDistanceCyclerClient.CYCLER_KEY.matches(event)) {
+            cycleDynamic(event.hasShiftDown());
+            cir.setReturnValue(true);
         }
 
+        if (RenderDistanceCyclerClient.CYCLER_KEY_UP.matches(event)) {
+            cycleUp();
+            cir.setReturnValue(true);
+        }
+
+        if (RenderDistanceCyclerClient.CYCLER_KEY_DOWN.matches(event)) {
+            cycleDown();
+            cir.setReturnValue(true);
+        }
         Minecraft.getInstance().options.save();
-        cir.setReturnValue(true);
     }
 
     @Unique
