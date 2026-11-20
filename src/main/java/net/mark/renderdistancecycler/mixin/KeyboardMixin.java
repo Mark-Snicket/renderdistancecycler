@@ -8,7 +8,6 @@ import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -52,7 +51,7 @@ public abstract class KeyboardMixin {
         OptionInstance<Integer> renderDistance = minecraft.options.renderDistance();
         OptionInstance.IntRange range = (OptionInstance.IntRange) renderDistance.values();
 
-        renderDistance.set(Mth.clamp(renderDistance.get() + (decrease ? -1 : 1), range.minInclusive(), range.maxInclusive()));
+        renderDistance.set(Math.clamp(renderDistance.get() + (decrease ? -1 : 1), range.minInclusive(), range.maxInclusive()));
         this.debugFeedbackComponent(MutableComponent.create(new TranslatableContents("debug.render-distance-cycler.message", null, new Integer[]{renderDistance.get()})));
     }
 

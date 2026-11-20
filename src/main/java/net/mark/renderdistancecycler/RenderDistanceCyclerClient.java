@@ -16,7 +16,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.util.Mth;
 
 import java.util.Objects;
 
@@ -62,7 +61,7 @@ public class RenderDistanceCyclerClient implements ClientModInitializer {
         OptionInstance<Integer> renderDistance = Minecraft.getInstance().options.renderDistance();
         OptionInstance.IntRange range = (OptionInstance.IntRange) renderDistance.values();
 
-        renderDistance.set(Mth.clamp(IntegerArgumentType.getInteger(context, "target_render_distance"), range.minInclusive(), range.maxInclusive()));
+        renderDistance.set(Math.clamp(IntegerArgumentType.getInteger(context, "target_render_distance"), range.minInclusive(), range.maxInclusive()));
 
         Objects.requireNonNull(
                 context.getSource().getPlayer()).sendSystemMessage(
